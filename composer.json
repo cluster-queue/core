@@ -35,7 +35,7 @@
         "sort-packages": true
     },
 
-    "license": "not in yet, no license!",
+    "license": "",
 
     "minimum-stability": "dev"
 }
