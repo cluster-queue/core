@@ -34,11 +34,9 @@
     "require-dev": {
 
     },
-
     "config": {
         "sort-packages": true
     },
-
     "license": "not in yet, no license!",
     "minimum-stability": "dev"
 }
