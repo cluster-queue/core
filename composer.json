@@ -9,7 +9,7 @@
             "email": "flobee.code@gmail.com"
         }
     ],
-    "type": "project",
+    "type": "library",
     
     "bin": [
         "bin/php-cluster-queue"
