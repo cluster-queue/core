@@ -1,6 +1,6 @@
 {
     "name": "cluster-queue/core",
-    "description": "Setup a configuration to setup a server cluster. Eg. with DRDB, heartbeat for DB/ WWW Servers; You may look for the dummy package to use this in the background",
+    "description": "Setup a configuration to setup a server cluster. Eg. with DRBD, heartbeat for DB/ WWW Servers; You may look for the dummy package to use this in the background",
     "keywords": ["php", "library", "web", "shell", "DTO", "DAO"],
     "homepage": "https://github.com/cluster-queue/core",
     "authors": [
