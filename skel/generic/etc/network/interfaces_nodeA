@@ -1,0 +1,35 @@
+# This file describes the network interfaces available on your system
+# and how to activate them. For more information, see interfaces(5).
+
+source /etc/network/interfaces.d/*
+
+# The loopback network interface
+auto lo
+iface lo inet loopback
+
+# node 1
+
+allow-hotplug NODEETHIFACENAME02
+
+
+###
+# The primary network interface/ INTERNAL
+
+auto NODEETHIFACENAME01
+iface NODEETHIFACENAME01 inet static
+        address NODE01IPADDRINT/24
+        # gateway NODE01GWIPADDRINT # by dhcp see below
+
+
+###
+# The secondary network interface/ PUBLIC/ HA (ip: NODESHAREDIP)
+
+# change to dhcp?
+#iface NODEETHIFACENAME02 inet dhcp
+
+#auto NODEETHIFACENAME02
+iface NODEETHIFACENAME02 inet static
+        address NODE01IPADDRPUB/24
+        gateway NODE01GWIPADDRPUB
+        # dns-* options are implemented by the resolvconf package, if installed
+        dns-search NODESDOMAINNAME

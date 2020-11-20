@@ -1,0 +1,1 @@
+NODECURRENTINT NODESHAREDIP/24 drbddisk::r0 Filesystem::/dev/drbd0::/var/lib/mysql::xfs::noatime mysql

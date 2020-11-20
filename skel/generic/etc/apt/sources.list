@@ -1,0 +1,17 @@
+# deb cdrom:[Debian GNU/Linux 10.3.0 _Buster_ - Official amd64 DVD Binary-1 20200208-12:08]/ buster contrib main
+#deb cdrom:[Debian GNU/Linux 10.3.0 _Buster_ - Official amd64 DVD Binary-1 20200208-12:08]/ buster contrib main
+
+deb http://deb.debian.org/debian/ buster main non-free contrib
+# deb-src http://deb.debian.org/debian/ buster main non-free contrib
+
+deb http://security.debian.org/debian-security buster/updates main contrib non-free
+# deb-src http://security.debian.org/debian-security buster/updates main contrib non-free
+
+# buster-updates, previously known as 'volatile'
+deb http://deb.debian.org/debian/ buster-updates main contrib non-free
+# deb-src http://deb.debian.org/debian/ buster-updates main contrib non-free
+
+# buster-backports, previously on backports.debian.org
+# see in source.list.d/backports.list
+# deb http://deb.debian.org/debian/ buster-backports main contrib non-free
+# deb-src http://deb.debian.org/debian/ buster-backports main contrib non-free

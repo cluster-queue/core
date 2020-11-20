@@ -1,0 +1,13 @@
+# Check Interval
+keepalive 1
+# Time before server declared dead
+deadtime 10
+# Secondary wait delay at boot
+initdead 60
+# Auto-failback
+auto_failback off
+# Heartbeat Interface eg eth1
+bcast NODEBCASTIFACENAME
+# Nodes to monitor
+node NODE01HOSTNAMEINT
+node NODE02HOSTNAMEINT

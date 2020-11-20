@@ -2,3 +2,8 @@
 /vendor
 /archive/
 /logs/
+src/test*
+#
+# todo
+skel/homes/.zshrc
+src/debNodeInstall.sh
