@@ -18,7 +18,7 @@
           "source": {
               "url": "https://github.com/mumsys/library.git",
               "type": "git",
-              "reference":"unstable"
+              "reference":"13dde82"
             }
         }
     }],
