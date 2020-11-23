@@ -128,18 +128,17 @@ catch ( Exception $ex ) {
 //
 
 require_once 'vendor/autoload.php';
+
 $logOptions = array(
     'logfile' => './logs/'. $input['config'] .'.log',
     'way' => 'a',
     'logLevel' => 7,
-    'msglogLevel' => 6,
-    'msgEcho' => false,
-    'msgReturn' => false,
     'lineFormat'=>'%5$s',
-    'msgLineFormat'=>'%5$s',
     'maxfilesize' => (1024 * 1024 * 1), // 1M
 );
-$logger = new Mumsys_Logger($logOptions);
+
+$logger = new Mumsys_Logger_File( $logOptions );
+
 /** @var QueueHelper Helper/manager object */
 $runner = new QueueHelper( $input, $configNodes, $configsDefault, $logger );
 
