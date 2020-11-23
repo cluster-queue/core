@@ -10,18 +10,7 @@
         }
     ],
     "type": "library",
-    "repositories": [{
-        "type":"package",
-        "package": {
-          "name": "mumsys/library",
-          "version":"master",
-          "source": {
-              "url": "https://github.com/mumsys/library.git",
-              "type": "git",
-              "reference":"13dde82"
-            }
-        }
-    }],
+    
 
     "bin": [
         "bin/php-cluster-queue"
@@ -29,14 +18,13 @@
 
     "autoload": {
         "classmap": [
-            "src/",
-            "vendor/mumsys/library/src"
+            "src/"
         ]
     },
 
     "require": {
         "php": "7.3.* | 7.4.* | 8.0.*",
-        "mumsys/library": "master"
+        "mumsys/library": "dev-unstable"
     },
 
     "require-dev": {
