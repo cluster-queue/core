@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e0b5ce0d7552b14f86774a7ddb7b1501",
+    "content-hash": "5043b0140cf0d2c822b6e38e2f61cdd8",
     "packages": [
         {
             "name": "flobee/spss",
@@ -214,7 +214,7 @@
     "stability-flags": {
         "mumsys/library": 20
     },
-    "prefer-stable": false,
+    "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
         "php": "7.3.* | 7.4.* | 8.0.*"
