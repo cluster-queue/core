@@ -84,17 +84,17 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Mumsys/Library.git",
-                "reference": "6c3b05b2be4764a743b30c7a638161680820527f"
+                "reference": "404265b3e7d9d3b94f19cb6b6ce59daf9365137a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Mumsys/Library/zipball/6c3b05b2be4764a743b30c7a638161680820527f",
-                "reference": "6c3b05b2be4764a743b30c7a638161680820527f",
+                "url": "https://api.github.com/repos/Mumsys/Library/zipball/404265b3e7d9d3b94f19cb6b6ce59daf9365137a",
+                "reference": "404265b3e7d9d3b94f19cb6b6ce59daf9365137a",
                 "shasum": ""
             },
             "require": {
                 "flobee/spss": "^3.1",
-                "php": "7.3.*",
+                "php": "7.3.* | 7.4.*",
                 "phpmailer/phpmailer": "^6"
             },
             "require-dev": {
@@ -136,7 +136,7 @@
                 "shell",
                 "web"
             ],
-            "time": "2020-11-23T21:41:12+00:00"
+            "time": "2020-11-24T20:55:13+00:00"
         },
         {
             "name": "phpmailer/phpmailer",
