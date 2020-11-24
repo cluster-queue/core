@@ -1,17 +1,8 @@
-DE | [EN](README_EN.md) (not in yet)
-
-
-
 cluster-queue - core
 ============================================================
 
-Einrichtung einer Konfiguration um einen server cluster einrichten zu können.
-Z.B HA Cluster mit DRBD/ Heatbeat für DB und WWW Server konfigurieren.
+DE | [EN](README_EN.md)
 
-`core` - Projekt
-
-Das `cluster-queue/dummy` Projekt ist für die reine Benutzung eines eigenen Projektes
-ausgelegt das diese Quellen nutz.
 
 
 <!-- doctoc --title 'Inhalt' README.md -->
@@ -19,18 +10,34 @@ ausgelegt das diese Quellen nutz.
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 Inhalt
 
-- [Ausgangssituation](#ausgangssituation)
-  - [Basis zum Ausprobieren](#basis-zum-ausprobieren)
-- [Installation](#installation)
-  - [Anforderungen](#anforderungen)
-- [Beschreibung](#beschreibung)
-- [Benutzung von `php-cluster-queue`](#benutzung-von-php-cluster-queue)
-  - [Parameter Beschreibung](#parameter-beschreibung)
-  - [Konfiguration](#konfiguration)
-    - [Die `default` Konfiguration.](#die-default-konfiguration)
-- [Beispiel HA Cluster [ Web | DB ] Server Infrastruktur](#beispiel-ha-cluster--web--db--server-infrastruktur)
+- [cluster-queue - core - Projekt](#cluster-queue---core---projekt)
+  - [Ausgangssituation](#ausgangssituation)
+    - [Basis zum Ausprobieren](#basis-zum-ausprobieren)
+  - [Installation](#installation)
+    - [Anforderungen](#anforderungen)
+  - [Beschreibung](#beschreibung)
+  - [Benutzung von `php-cluster-queue`](#benutzung-von-php-cluster-queue)
+    - [Parameter Beschreibung](#parameter-beschreibung)
+    - [Konfiguration](#konfiguration)
+      - [Die `default` und nodes `configs` Konfiguration.](#die-default-und-nodes-configs-konfiguration)
+  - [Beispiel HA Cluster [ Web | DB ] Server Infrastruktur](#beispiel-ha-cluster--web--db--server-infrastruktur)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
+
+
+cluster-queue - core - Projekt
+============================================================
+
+Einrichtung einer Konfiguration um einen oder mehrere server oder server cluster
+einrichten zu können. Z.B HA Cluster mit DRBD/ Heatbeat für DB und WWW Server
+konfigurieren.
+
+`core` - Projekt
+
+Das [cluster-queue/dummy](http://github.com/cluster-queue/dummy) Projekt ist für die
+reine Benutzung eines eigenen Projektes ausgelegt das diese Quellen nutz.
+Die Dokumentation liegt je nach Version, nach der Installation des `dummy` Projektes bei.
 
 
 Ausgangssituation
@@ -119,7 +126,7 @@ Anforderungen an dieses Programm:
 
 - Wo läuft 'php-cluster-queue'?
   Auf jedem Betriebssystem/ OS wo `php` als auch ggf. Shell scripte
-  (`sh`/ `bash`) in der Console ausgeführt werden können als auch scp und ssh.
+  (`sh`/ `bash`) in der Console ausgeführt werden können als auch `scp` und `ssh`.
 
 - Vorzugweise ein Unix/Linux basierendes OS. Für andere Betriebssysteme liegen
   keine Quellen bei.
@@ -153,7 +160,8 @@ Die Node Konfigurations Datei (und Aktion): `configs`
 (`src/config/nodesconfigs_CONFIGNAME.php`) für individuelle Schritte pro Node
 Konfiguration.
 
-Die Ausführungsreihenfolge ist innerhalb der Node/s Konfiguration bestimmbar,
+Die Ausführungsreihenfolge ist innerhalb der Node/s Konfiguration bestimmbar.
+
 Z.B:
 
     # Variante 1:
@@ -266,7 +274,7 @@ Verwendete Beispiel- Konfigurationen:
 ### Konfiguration
 
 
-#### Die `default` Konfiguration.
+#### Die `default` und nodes `configs` Konfiguration.
 
 Die `nodeconfigs_NAME_default.php` Konfiguration gilt für jeden Node welcher in der Node
 Konfiguration (NAME, `nodeconfigs_NAME.php`) angegeben ist.
@@ -275,7 +283,7 @@ Hier werden nur Aktionen konfiguriert. Die Konfigurations- Struktur ist mit der 
 Konfiguration (Bereich `actions`) vergleichbar bzw. identisch.
 
 Es werden verschiedene Job Konfigurationen erstellt die verschiedene Aufgaben übernehmen
-können. Z.B `deploy`, `archive`, `execute`.
+können. Z.B (type): `deploy`, `archive`, `execute`.
 
 Jede Job Konfiguration beinhaltet im Aktions- Code z.B `'debnode01:defaultdeploy'` den
 prefix des aktuellen Hostnamen/Node um den es gerade geht: 'prefix:individualcode'. Bei
@@ -286,7 +294,8 @@ in der Ausführungsreihenfolge ändern zu können.
 
 `archive`: Zieldatein sollten in einen zentralen Ordner gehen. Z.b. `archive/NODECURRENTPUB/`
 
-Z.B `deploy`:
+
+**Beispiel** `deploy`:
 
 Standard Aktions- Konfiguration, Typ:deploy. All diese Werte (je Typ) sollten existieren,
 können im `value` allerdings leer bleiben. Leere Job Konfigurationen können helfen
@@ -298,7 +307,6 @@ Aktionsreihenfolgen besser zu definieren.
             // Job 1:
             // NODECURRENTPUB wird ersetzt werden.
             'NODECURRENTPUB:defaultdeploy' => array(
-                // Aktion: deploy
                 'type' => 'deploy',
                 'value' => array(
                     // from local 'skel/' => to remote
@@ -316,7 +324,7 @@ Aktionsreihenfolgen besser zu definieren.
     ...
 
 
-`deploy` Sonderfall:
+**Sonderfall** `deploy`:
 
 In `skel/` können sich auch Templates befinden die bei Programmstart gewandelt (siehe
 `'replace'` in der Node Konfiguration) und nach `build/` kopiert werden.
@@ -358,7 +366,7 @@ Optionen zur Verfügung:
         'cp /tmp/a /tmp/b' => array('type'=>'remote'),
 
 
-Beispiele: 'src/config/nodeconfigs_ **demo | debnode** [ _default ].php'
+Beispiele sind in: 'src/config/nodeconfigs_ **demo | debnode** [ _default ].php' zu finden.
 
 
 
@@ -383,3 +391,4 @@ wird Schrittweise erklärt wie man ein HA Setup mit DRBD/ Heatbeat herstellen ka
 Für einen Testcase liegen Konfigurations- Dateien bei (config/**debnode**) wie man zwei
 DB und Web Server Ausfallsicher/ Hoch verfügbar (HA) machen kann (z.B lokal zum testen
 mittels Virtual Box).
+
