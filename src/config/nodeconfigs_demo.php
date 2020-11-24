@@ -36,7 +36,6 @@ return array(
         // actions take affect.
         'actions' => array(
             //// job 1
-            //array(
             //    jobKey: nodekey:customID => array(
             //        type: deploy|archive|execute,
             //        value: cmd|src=>target|cmd=>array(opts)
@@ -44,9 +43,7 @@ return array(
             //        poskey: nodekey:customID
             //        // default: 'posway' => 'after', 'poskey' => null,
             //    ),
-            //)
             //...
-            //),
 
             'debnode03:deploybuilds' => array(
                 'type' => 'deploy', 'value' => array(

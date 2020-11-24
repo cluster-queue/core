@@ -128,7 +128,6 @@ return array(
         // actions take affect.
         'actions' => array(
             //// job 1
-            //array(
             //    jobKey: int | nodekey:customID => array(
             //        type: deploy|archive|execute,
             //        value: cmd|src=>target
@@ -136,9 +135,7 @@ return array(
             //        poskey: nodekey:customID
             //        // default: 'posway' => 'after', 'poskey' => null,
             //    ),
-            //)
             //...
-            //),
 
             'debnode01:deploybuilds' => array(
                 'type' => 'deploy', 'value' => array(
@@ -347,7 +344,6 @@ return array(
         // actions take affect.
         'actions' => array(
             //// job 1
-            //array(
             //    jobKey: int | nodekey:customID => array(
             //        type: deploy|archive|execute,
             //        value: cmd|src=>target
@@ -355,9 +351,7 @@ return array(
             //        poskey: nodekey:customID
             //        // default: 'posway' => 'after', 'poskey' => null,
             //    ),
-            //)
             //...
-            //),
 
             'debnode03:deploybuilds' => array(
                 'type' => 'deploy', 'value' => array(
@@ -539,7 +533,6 @@ return array(
         // actions take affect.
         'actions' => array(
             //// job 1
-            //array(
             //    jobKey: int | nodekey:customID => array(
             //        type: deploy|archive|execute,
             //        value: cmd|src=>target
@@ -547,9 +540,7 @@ return array(
             //        poskey: nodekey:customID
             //        // default: 'posway' => 'after', 'poskey' => null,
             //    ),
-            //)
             //...
-            //),
 
             'debnode04:deploybuilds' => array(
                 'type' => 'deploy', 'value' => array(
