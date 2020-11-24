@@ -1,7 +1,8 @@
 {
     "name": "cluster-queue/core",
     "description": "Setup a configuration to setup a server cluster. Eg. with DRBD, heartbeat for DB/ WWW Servers; You may look for the dummy package to use this in the background",
-    "keywords": ["php", "library", "web", "shell", "DTO", "DAO"],
+    "type": "library",
+    "keywords": ["core", "cluster-queue", "cluster-setup", "cluster-management", "server-config", "setup", "ssh", "scp", "bash", "zsh", "shell", "cli", "php"],
     "homepage": "https://github.com/cluster-queue/core",
     "authors": [
         {
@@ -9,11 +10,9 @@
             "email": "flobee.code@gmail.com"
         }
     ],
-    "type": "library",
     
-
     "bin": [
-        "bin/php-cluster-queue"
+        "php-cluster-queue"
     ],
 
     "autoload": {
@@ -37,5 +36,6 @@
 
     "license": "GPL-3.0",
 
-    "minimum-stability": "dev"
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }
