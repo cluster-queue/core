@@ -118,7 +118,7 @@ Anforderungen an dieses Programm:
     php-cli
     ssh
     scp
-    bash | zsh
+    bash | zsh | sh (ash|dash)
 
 - Wichtig: Bitte sicherstellen das `php -v` min. php7.3 liefert.
   Ansonnsten die Shebang von `php-cluster-queue` anpassen oder entsprechende Pakete
@@ -154,7 +154,7 @@ Ausgangspunkt sind folgene Basis- Aktionen:
   oder auch lokal ausgeführt werden sollen.
 
 Konfigurations Datei (und Aktion): `defaults` gilt für alle Nodes
-(`src/config/nodesconfigs_CONFIGNAME_default.php`).
+(`src/config/nodesconfigs_CONFIGNAME_default.php`). **Muss nicht vorhanden sein.**
 
 Die Node Konfigurations Datei (und Aktion): `configs`
 (`src/config/nodesconfigs_CONFIGNAME.php`) für individuelle Schritte pro Node
@@ -217,6 +217,8 @@ Verwendete Beispiel- Konfigurationen:
 + Konfigurationen die für alle Nodes/ Server in `debnode` gelten. Aktion `defaults`:
 
   `src/config/nodeconfigs_debnode_default.php`
+
+  Muss nicht vorhanden sein wenn man keine allgmeinen Aktionen für alle nodes hat.
 
 
 

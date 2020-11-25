@@ -82,7 +82,7 @@ $actions = array(
 );
 $input = getopt( $shortopts, $longopts );
 
-$usageMesg = 'Usage: ./php-cluster-queue [--config:<nodes config>] [--action: ' . implode( '|', $actions ) . ']'
+$usageMesg = 'Usage: ./php-cluster-queue [--config=<nodes config>] [--action= ' . implode( '|', $actions ) . ']'
     . PHP_EOL . 'eg: ./php-cluster-queue --config=debnode --action=create' . PHP_EOL;
 if ( $inputCnt < 3 ) {
     exit( $usageMesg );
