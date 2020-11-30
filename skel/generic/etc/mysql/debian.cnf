@@ -1,12 +1,13 @@
 # Automatically generated for Debian scripts. DO NOT TOUCH!
+# deprecated with deb mariadb 10.5
 [client]
-host     = localhost
-user     = root
-password =
+host     = DB_ROOT_HOSTNAME
+user     = DB_ROOT_USERNAME
+password = DB_ROOT_PASSWORD
 socket   = /var/run/mysqld/mysqld.sock
 [mysql_upgrade]
-host     = localhost
-user     = root
-password =
+host     = DB_ROOT_HOSTNAME
+user     = DB_ROOT_USERNAME
+password = DB_ROOT_PASSWORD
 socket   = /var/run/mysqld/mysqld.sock
 basedir  = /usr

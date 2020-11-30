@@ -28,7 +28,7 @@ USE phpmyadmin;
 --
 -- (activate this statement if necessary)
 -- GRANT SELECT, INSERT, DELETE, UPDATE, ALTER ON `phpmyadmin`.* TO
---    'pma'@localhost;
+--    'PMA_AUTH_USERNAME'@PMA_AUTH_HOSTNAME;
 
 -- --------------------------------------------------------
 
