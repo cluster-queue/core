@@ -34,7 +34,7 @@ class QueueHelper
     /**
      * Version ID information.
      */
-    const VERSION = '1.0.0';
+    const VERSION = '1.0.1';
 
     /**
      * Verbose/ debug mode
@@ -91,6 +91,12 @@ class QueueHelper
      */
     private $_logger = null;
 
+    /**
+     * Confirmation script location for actions
+     * @var string
+     */
+    private $_confirmCommandLocation = 'src/confirmCommand.sh';
+
 
     /**
      * Init the object, verify and set configs to work with.
@@ -139,6 +145,17 @@ class QueueHelper
         if ( $this->_execConfirm ) {
             $this->_mesgStart( 'Confirmation of commands enabled.', 0, true );
             $this->_mesgEnd( '', true );
+        }
+
+        // misc checks
+        if ( file_exists( $this->_confirmCommandLocation ) ) {
+            // core project
+        }
+        else if ( file_exists( 'vendor/cluster-queue/core/src/confirmCommand.sh' ) ) {
+            $this->_confirmCommandLocation = 'vendor/cluster-queue/core/src/confirmCommand.sh';
+        }
+        else {
+            throw new Exception( 'ERR: Confirmation of commands - script not found!', 1 );
         }
     }
 
@@ -553,7 +570,7 @@ class QueueHelper
      */
     private function _executeShellCommandConfirm()
     {
-        $lastLine = exec( 'sh src/confirmCommand.sh', $execMsgs, $execCode );
+        $lastLine = exec( 'sh ' . $this->_confirmCommandLocation, $execMsgs, $execCode );
         if ( $execCode != 0 ) {
             $this->_mesgEnd( 'Skip', false );// just 4 the log
 

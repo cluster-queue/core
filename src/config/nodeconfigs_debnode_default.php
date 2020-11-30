@@ -89,8 +89,9 @@ return array(
             'type' => 'execute',
             'value' => array(
                 'scp src/debNodesInstall.sh root@NODECURRENTPUB:/root/ha-inst-tmp' => array('type' => 'local'),
-                'scp src/confirmCommand.sh root@NODECURRENTPUB:/root/ha-inst-tmp' => array('type' => 'local'),
-                'scp src/shellFunctions.sh root@NODECURRENTPUB:/root/ha-inst-tmp' => array('type' => 'local'),
+                'scp vendor/cluster-queue/core/src/confirmCommand.sh root@NODECURRENTPUB:/root/ha-inst-tmp' => array('type' => 'local'),
+                'scp vendor/cluster-queue/core/src/shellFunctions.sh root@NODECURRENTPUB:/root/ha-inst-tmp' => array('type' => 'local'),
+
                 'scp skel/generic/etc/apt/sources.list  root@NODECURRENTPUB:/etc/apt/sources.list' => array('type' => 'local'),
                 'scp skel/generic/etc/apt/sources.list.d/* root@NODECURRENTPUB:/etc/apt/sources.list.d' => array('type' => 'local'),
                 # .shell_aliases  .zsh_history  .zshrc  .zshrc.local  .zshrc.pre

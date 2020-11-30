@@ -93,7 +93,7 @@ if ( $inputCnt < 3 ) {
 //
 
 try {
-    if ( isset($input['config']) && ctype_alpha( $input['config'] ) ) {
+    if ( isset($input['config']) && ctype_alnum( $input['config'] ) ) {
         $configNodesLoc = 'src/config/nodeconfigs_' . $input['config'] . '.php';
         if ( !file_exists( $configNodesLoc ) ) {
             throw new Exception( 'Invalid config location: "' . $configNodesLoc . '"' );

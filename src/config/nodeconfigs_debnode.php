@@ -59,12 +59,12 @@ return array(
             'NODE01IPADDRPUB' => '192.168.26.210', //eth1,
             'NODE01GWIPADDRPUB' => '192.168.26.1', // gateway IP eth1,
 
-            'NODE01IPADDRINT' => '10.0.0.10', //eth0, debnode03
+            'NODE01IPADDRINT' => '10.0.0.10', //eth0, debnode01
             'NODE01GWIPADDRINT' => '10.0.0.1', // gateway IP
 
             'NODE02IPADDRPUB' => '192.168.26.211', //eth1
             'NODE02GWIPADDRPUB' => '192.168.26.1', // gateway IP eth1,node2
-            'NODE02IPADDRINT' => '10.0.0.20', //eth0,debnode04
+            'NODE02IPADDRINT' => '10.0.0.20', //eth0,debnode01
             'NODE02GWIPADDRINT' => '10.0.0.1', // gateway IP node2
 
             'NODESHAREDHOSTNAME' => 'debnodewww', // for the dns to point to the shared ip
@@ -87,16 +87,35 @@ return array(
             'NODEETHIFACENAME01' => 'enp0s3', // node eth iface name eg eth0
             'NODEETHIFACENAME02' => 'enp0s8', // node eth iface name eg eth1
 
+            //
+            // MTA
+            //
             // mail as smarthost otherwise create more variables to setup your MTA
             // update-exim4.conf den dc_smarthost='NODESMAILRELAYSMARTHOST'
             // postfix/main.cf: relayhost = 'NODESMAILRELAYSMARTHOST'
-            'NODESMAILRELAYSMARTHOST' => '', // ip or hostname
+            'NODESMAILRELAYSMARTHOST' => 'debnode01', // ip or hostname
+            'NODESMAILCONFIGTYPE' => 'local', // smarthost | local ...
             // mail domain name, localhost.localdomain
-            // or NODECURRENTPUB, domain.com, /etc/mailname
-            'NODESMAILDOMAINNAME' => 'debnode01',
+            // or NODECURRENTPUB, domain.com, for /etc/mailname
+            'NODESMAILDOMAINNAME' => 'debnodewww',
             // eg: 'NODECURRENTPUB.NODESMAILDOMAINNAME'
-            //     -> debnode03.domain.com
-            'NODESMAILOTHEDOMAINNAME' => 'debnode01',
+            //     -> debnode01.domain.com
+            'NODESMAILOTHEDOMAINNAME' => 'debnodewww',
+
+            //
+            // mariadb/mysql
+            //
+            // only for the root maintainance on that machine (when using the generic/
+            // .../debian.cnf file with socket connection)
+            'DB_ROOT_USERNAME' => 'root',
+            'DB_ROOT_PASSWORD' => '',
+            'DB_ROOT_HOSTNAME' => 'localhost',
+
+            // - phpmyadmin. install pma db('phpmyadmin')/ user ('pma') access
+            'PMA_AUTH_USERNAME' => 'pma',
+            'PMA_AUTH_PASSWORD' => 'some-pma-password',
+// TODO
+            'PMA_AUTH_HOSTNAME' => 'localhost',
         ),
 
         // relevant files for the replacement for this node
@@ -208,6 +227,7 @@ return array(
                 'type' => 'execute', 'value' => array(
                     '#',
                     '# reboot and test if its working before going on to configure server details',
+                    '# shutdown -r now',
                     '#',
                     '# for the activ and new WWW node:',
                     '# mounted?:',
@@ -220,31 +240,203 @@ return array(
             ),
         ),
     ),
-//
-//    //
-//    // www node 2 (pair of debnode01 & debnode02)
-//    //
-//    'debnode02' => array( // real machine hostname
-//        // text replacements/ substitution in skel/ config files for
-//        // heartbeat, drbd, hosts config...
-//        // node01 = debnode01
-//        // node02 = debnode02
-//        'replace' => array(
-//            'NODECURRENTPUB' => 'debnode02',
+
+    //
+    // www node 2 (pair of debnode01 & debnode02)
+    //
+    'debnode02' => array( // real machine hostname
+//        // future
+//        'installconfig' => array(
+//            // servertype = database | webserver
+//            'servertype' => 'database',
+//            // servertaget = live | internal;
+//            //  live = only 'must have' packages
+//            //  internal = packages + development extras/ tools
+//            'servertaget' => 'internal',
+//            # additional packages to install for that servers
+//            'serverpacks' => 'heartbeat drbd-utils drbd-doc bwm-ng',
 //        ),
 //
-//        // relevant files for the replacement for this node
-//        // starting in: './skel'
-//        'files' => array(
-//
-//        ),
-//
-//        // Again: DANGER ZONE!
-//        // commands to execute remote after deploy:
-//        'actions' => array(
-//
-//        ),
-//    ),
+        // text replacements/ substitution in config files (templates) for
+        // heartbeat, drbd, hosts config or other individuals you may want
+        // node01 = debnode01
+        // node02 = debnode02
+        'replace' => array(
+            //
+            // replacements mostly for heartbeat and DRBD (www server group) configuration
+            //
+            'NODE01HOSTNAMEINT' => 'debnode01int', // internal hostname
+            'NODE01HOSTNAMEPUB' => 'debnode01', // public hostname via dns
+            'NODE02HOSTNAMEINT' => 'debnode02int', // internal hostname
+            'NODE02HOSTNAMEPUB' => 'debnode02', // public hostname via dns
+
+            // internal/public ip's to connect under the hood or from outside
+            'NODE01IPADDRPUB' => '192.168.26.210', //eth1,
+            'NODE01GWIPADDRPUB' => '192.168.26.1', // gateway IP eth1,
+
+            'NODE01IPADDRINT' => '10.0.0.10', //eth0, debnode01
+            'NODE01GWIPADDRINT' => '10.0.0.1', // gateway IP
+
+            'NODE02IPADDRPUB' => '192.168.26.211', //eth1
+            'NODE02GWIPADDRPUB' => '192.168.26.1', // gateway IP eth1,node2
+            'NODE02IPADDRINT' => '10.0.0.20', //eth0,debnode02
+            'NODE02GWIPADDRINT' => '10.0.0.1', // gateway IP node2
+
+            'NODESHAREDHOSTNAME' => 'debnodewww', // for the dns to point to the shared ip
+            'NODESHAREDIP' => '192.168.26.215', // HA IP for node01 or node02 for the activ one
+            // for /etc/hosts, interfaces dns-search;
+            // localhost.localdomain, 'domain.com' or NODECURRENTPUB
+            'NODESDOMAINNAME' => 'debnode02',
+
+            // shared secred for the nodes to comunicate to each other. for each node
+            // group (eg. DB or www group for DRBD) the same.
+            'NODESHAREDSECRED' => 'debnode-your-secure-password',
+
+            'NODECURRENTINT' => 'debnode02int', // internal/ real hostname/ uname -n
+            'NODECURRENTPUB' => 'debnode02', // key of this config! + hostname to be known in dns/ outside
+
+            'NODE01SHAREDDISKDEVICE' => '/dev/sdb1', // 4GB 2nd disk
+            'NODE02SHAREDDISKDEVICE' => '/dev/sdb1', // 4GB 2nd disk
+
+            'NODEBCASTIFACENAME' => 'enp0s8', // iface for the HA IP
+            'NODEETHIFACENAME01' => 'enp0s3', // node eth iface name eg eth0
+            'NODEETHIFACENAME02' => 'enp0s8', // node eth iface name eg eth1
+
+            //
+            // MTA
+            //
+            // mail as smarthost otherwise create more variables to setup your MTA
+            // update-exim4.conf den dc_smarthost='NODESMAILRELAYSMARTHOST'
+            // postfix/main.cf: relayhost = 'NODESMAILRELAYSMARTHOST'
+            'NODESMAILRELAYSMARTHOST' => 'debnode02', // ip or hostname
+            'NODESMAILCONFIGTYPE' => 'local', // smarthost | local ...
+            // mail domain name, localhost.localdomain
+            // or NODECURRENTPUB, domain.com, for /etc/mailname
+            'NODESMAILDOMAINNAME' => 'debnodewww',
+            // eg: 'NODECURRENTPUB.NODESMAILDOMAINNAME'
+            //     -> debnode02.domain.com
+            'NODESMAILOTHEDOMAINNAME' => 'debnodewww',
+
+            //
+            // mariadb/mysql
+            //
+            // only for the root maintainance on that machine (when using the generic/
+            // .../debian.cnf file with socket connection)
+            'DB_ROOT_USERNAME' => 'root',
+            'DB_ROOT_PASSWORD' => '',
+            'DB_ROOT_HOSTNAME' => 'localhost',
+
+            // - phpmyadmin. install pma db('phpmyadmin')/ user ('pma') access
+            'PMA_AUTH_USERNAME' => 'pma',
+            'PMA_AUTH_PASSWORD' => 'some-pma-password',
+// TODO
+            'PMA_AUTH_HOSTNAME' => 'localhost',
+        ),
+
+        // relevant files for the replacement for this node
+        // starting in: './skel'
+        'files' => array(
+            '/generic/etc/drbd.d/r0.res' => '/etc/drbd.d/r0.res',
+            '/generic/etc/ha.d/authkeys' => '/etc/ha.d/authkeys',
+            '/generic/etc/ha.d/ha.cf' => '/etc/ha.d/ha.cf',
+# @todo for nginx
+            '/generic/etc/ha.d/haresources_httpd' => '/etc/ha.d/haresources',
+            '/generic/etc/hostname' => '/etc/hostname',
+            '/generic/etc/hosts_drbd' => '/etc/hosts',
+            // debnode02: 2nd node in drbd
+            '/generic/etc/network/interfaces_nodeB' => '/etc/network/interfaces',
+            # maybe needed 4 postfix or other debian mail related stuff
+            '/generic/etc/mailname' => '/etc/mailname',
+            // exim as smarthost
+            '/generic/etc/exim4/update-exim4.conf.conf' => '/etc/exim4/update-exim4.conf.conf',
+# @todo for nginx
+            // nginx configs
+            // no replacments in yet! php7.4-fpm enabled
+            //'/generic/etc/nginx/sites-available/default' => '/etc/nginx/sites-available/default'
+            //'/generic/etc/nginx/sites-available/poxysite' => '/etc/nginx/sites-available/proxysite',
+        ),
+
+        // Action configs/tokens to queue dependencies
+        // Command types to execute: deploy, archive, execute
+        // Note: software must be installed or an install task should be set before config
+        // actions take affect.
+        'actions' => array(
+            //// job 1
+            //    jobKey: int | nodekey:customID => array(
+            //        type: deploy|archive|execute,
+            //        value: cmd|src=>target
+            //        posway: before|after,
+            //        poskey: nodekey:customID
+            //        // default: 'posway' => 'after', 'poskey' => null,
+            //    ),
+            //...
+
+            'debnode02:deploybuilds' => array(
+                'type' => 'deploy', 'value' => array(
+                    // flag to include the values from 'files' from above ('replace' key)
+                    // only once per node config!
+                    'files' => true,
+                ),
+                'posway' => 'after',
+                'poskey' => 'debnode01:deploybuilds',
+            ),
+
+            'debnode02:deployfirst' => array(
+                'type' => 'deploy', 'value' => array(
+                    // some example
+                    //'/generic/etc/nginx/sites-available/a' => '/etc/nginx/sites-available/a',
+
+# @todo for phpmyadmin https://github.com/flobee/public/tree/master/etc/phpmyadmin/conf.d
+# db node shared IP required!
+#
+                ),
+                'posway' => 'after',
+                'poskey' => 'debnode01:deployfirst', // queue in after debnode01:deployfirst
+            ),
+
+            'debnode02:actionInit' => array(
+                'type' => 'execute', 'value' => array(
+                    'systemctl disable nginx.service',
+                    'systemctl stop nginx.service',
+
+                    'systemctl stop drbd.service heartbeat.service',
+
+                    'systemctl enable drbd.service',
+                    'systemctl enable heartbeat.service',
+
+                    'chmod 600 /etc/ha.d/authkeys',
+
+                    '[ ! -d /var/www_bak ] && mv var/www var/www_bak',
+                    '[ ! -d /var/www ] && mkdir /var/www',
+                    'chown root:root /var/www',
+
+                    // for the secondary (node2)
+                    'echo -e \'n\np\n1\n\n\nw\' | fdisk /dev/sdb', // create partition
+                    'drbdadm create-md r0',
+                    '#',
+                    '# Check the docs before: Activation of DRBD:',
+                    'systemctl restart drbd.service',
+
+                    '# checking sync of drbd devices:',
+                    'df -h && cat /proc/drbd',
+                ),
+                'posway' => 'after',
+                'poskey' => 'debnode01:actionInit', // queue in after debnode01:actionInit
+            ),
+
+            'debnode02:actionInitPostDeps' => array(
+                'type' => 'execute', 'value' => array(
+                    'systemctl start heartbeat.service',
+
+                    '# reboot and test if drbd/heatbeat are working before',
+                    '# going on to configure server details',
+                    '# shutdown -r now',
+                 ),
+                'posway' => 'after',
+                'poskey' => 'debnode01:actionInitAfterNode2ActionInit', // queue in
+            ),
+        ),
+    ),
 
     //
     // --- DATABASE HA PAIR
@@ -309,16 +501,35 @@ return array(
             'NODEETHIFACENAME01' => 'enp0s3', // node eth iface name eg eth0
             'NODEETHIFACENAME02' => 'enp0s8', // node eth iface name eg eth1
 
+            //
+            // MTA
+            //
             // mail as smarthost otherwise create more variables to setup your MTA
             // update-exim4.conf den dc_smarthost='NODESMAILRELAYSMARTHOST'
             // postfix/main.cf: relayhost = 'NODESMAILRELAYSMARTHOST'
-            'NODESMAILRELAYSMARTHOST' => '', // ip or hostname
+            'NODESMAILRELAYSMARTHOST' => 'debnode03', // ip or hostname
+            'NODESMAILCONFIGTYPE' => 'local', // smarthost | local ...
             // mail domain name, localhost.localdomain
-            // or NODECURRENTPUB, domain.com, /etc/mailname
-            'NODESMAILDOMAINNAME' => 'debnode03',
+            // or NODECURRENTPUB, domain.com, for /etc/mailname
+            'NODESMAILDOMAINNAME' => 'debnodedb',
             // eg: 'NODECURRENTPUB.NODESMAILDOMAINNAME'
             //     -> debnode03.domain.com
-            'NODESMAILOTHEDOMAINNAME' => 'debnode03',
+            'NODESMAILOTHEDOMAINNAME' => 'debnodedb',
+
+            //
+            // mariadb/mysql
+            //
+            // only for the root maintainance on that machine (when using the generic/
+            // .../debian.cnf file with socket connection)
+            'DB_ROOT_USERNAME' => 'root',
+            'DB_ROOT_PASSWORD' => '',
+            'DB_ROOT_HOSTNAME' => 'localhost',
+
+            // - phpmyadmin. install pma db('phpmyadmin')/ user ('pma') access
+            'PMA_AUTH_USERNAME' => 'pma',
+            'PMA_AUTH_PASSWORD' => 'some-pma-password',
+// TODO
+            'PMA_AUTH_HOSTNAME' => 'localhost',
         ),
 
         // relevant files for the replacement for this node
@@ -336,6 +547,10 @@ return array(
             '/generic/etc/mailname' => '/etc/mailname',
             // exim as smarthost
             '/generic/etc/exim4/update-exim4.conf.conf' => '/etc/exim4/update-exim4.conf.conf',
+
+            // For the active DB node (needs deploy defaults first to use the files!)
+            '/helper/phpmyadmin/phpmyadmin_create_tables.sql' => '/root/ha-inst-tmp/phpmyadmin_create_tables.sql',
+            '/helper/phpmyadmin/phpmyadmin_pma_user.sql' => '/root/ha-inst-tmp/phpmyadmin_pma_user.sql',
         ),
 
         // Action configs/tokens to queue dependencies
@@ -368,9 +583,6 @@ return array(
                     '/generic/etc/mysql/debian.cnf' => '/etc/mysql/debian.cnf', // must exists in skel/
                     '/generic/etc/mysql/mariadb.cnf' => '/etc/mysql/mariadb.cnf', // must exists in skel/
                     '/generic/etc/mysql/mariadb.conf.d/*' => '/etc/mysql/mariadb.conf.d/',
-                    // For the active DB node (needs deploydefaults first!)
-                    '/helper/phpmyadmin/phpmyadmin_create_tables.sql' => '/root/ha-inst-tmp/phpmyadmin_create_tables.sql',
-                    '/helper/phpmyadmin/phpmyadmin_pma_user_debnode.sql' => '/root/ha-inst-tmp/phpmyadmin_pma_user.sql',
                 ),
                 'posway' => 'after',
                 'poskey' => null,
@@ -423,6 +635,7 @@ return array(
                 'type' => 'execute', 'value' => array(
                     '#',
                     '# reboot and test if its working before going on to configure server details',
+                    '# shutdown -r now',
                     '#',
                     '# for the activ and new DB node:',
                     '# mounted?:',
@@ -499,15 +712,31 @@ return array(
             'NODEETHIFACENAME02' => 'enp0s8', // node eth iface name eg eth1
 
             // mail as smarthost otherwise create more variables to setup your MTA
-            // update-exim4.conf:dc_smarthost='NODESMAILRELAYSMARTHOST'
+            // update-exim4.conf den dc_smarthost='NODESMAILRELAYSMARTHOST'
             // postfix/main.cf: relayhost = 'NODESMAILRELAYSMARTHOST'
-            'NODESMAILRELAYSMARTHOST' => '', // ip or hostname
+            'NODESMAILRELAYSMARTHOST' => 'debnode04', // ip or hostname
+            'NODESMAILCONFIGTYPE' => 'local', // smarthost | local ...
             // mail domain name, localhost.localdomain
-            // or NODECURRENTPUB, domain.com, /etc/mailname
-            'NODESMAILDOMAINNAME' => 'debnode03',
+            // or NODECURRENTPUB, domain.com, for /etc/mailname
+            'NODESMAILDOMAINNAME' => 'debnodedb',
             // eg: 'NODECURRENTPUB.NODESMAILDOMAINNAME'
             //     -> debnode04.domain.com
-            'NODESMAILOTHEDOMAINNAME' => 'debnode04',
+            'NODESMAILOTHEDOMAINNAME' => 'debnodedb',
+
+            //
+            // mariadb/mysql
+            //
+            // only for the root maintainance on that machine (when using the generic/
+            // .../debian.cnf file with socket connection)
+            'DB_ROOT_USERNAME' => 'root',
+            'DB_ROOT_PASSWORD' => '',
+            'DB_ROOT_HOSTNAME' => 'localhost',
+
+            // - phpmyadmin. install pma db('phpmyadmin')/ user ('pma') access
+            'PMA_AUTH_USERNAME' => 'pma',
+            'PMA_AUTH_PASSWORD' => 'some-pma-password',
+// TODO
+            'PMA_AUTH_HOSTNAME' => 'localhost', // 'debnodewww',
         ),
 
         // relevant files for the replacement for this node
@@ -525,6 +754,10 @@ return array(
             '/generic/etc/mailname' => '/etc/mailname',
             // exim as smarthost
             '/generic/etc/exim4/update-exim4.conf.conf' => '/etc/exim4/update-exim4.conf.conf',
+
+            // For the active DB node (needs deploy defaults first to use the files!)
+            '/helper/phpmyadmin/phpmyadmin_create_tables.sql' => '/root/ha-inst-tmp/phpmyadmin_create_tables.sql',
+            '/helper/phpmyadmin/phpmyadmin_pma_user.sql' => '/root/ha-inst-tmp/phpmyadmin_pma_user.sql',
         ),
 
         // Action configs/tokens to queue dependencies
@@ -557,9 +790,6 @@ return array(
                     '/generic/etc/mysql/debian.cnf' => '/etc/mysql/debian.cnf', // must exists in skel/
                     '/generic/etc/mysql/mariadb.cnf' => '/etc/mysql/mariadb.cnf', // must exists in skel/
                     '/generic/etc/mysql/mariadb.conf.d/*' => '/etc/mysql/mariadb.conf.d/',
-                    // For the active DB node (needs deploydefaults first!)
-                    '/helper/phpmyadmin/phpmyadmin_create_tables.sql' => '/root/ha-inst-tmp/phpmyadmin_create_tables.sql',
-                    '/helper/phpmyadmin/phpmyadmin_pma_user_debnode.sql' => '/root/ha-inst-tmp/phpmyadmin_pma_user.sql',
                 ),
                 'posway' => 'after',
                 'poskey' => 'debnode03:deployfirst', // queue in after debnode03:deployfirst
@@ -600,6 +830,7 @@ return array(
 
                     '# reboot and test if drbd/heatbeat are working before',
                     '# going on to configure server details',
+                    '# shutdown -r now',
                  ),
                 'posway' => 'after',
                 'poskey' => 'debnode03:actionInitAfterNode2ActionInit', // queue in
