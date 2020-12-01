@@ -548,6 +548,7 @@ return array(
             // exim as smarthost
             '/generic/etc/exim4/update-exim4.conf.conf' => '/etc/exim4/update-exim4.conf.conf',
 
+            '/generic/etc/mysql/debian.cnf' => '/etc/mysql/debian.cnf',
             // For the active DB node (needs deploy defaults first to use the files!)
             '/helper/phpmyadmin/phpmyadmin_create_tables.sql' => '/root/ha-inst-tmp/phpmyadmin_create_tables.sql',
             '/helper/phpmyadmin/phpmyadmin_pma_user.sql' => '/root/ha-inst-tmp/phpmyadmin_pma_user.sql',
@@ -580,7 +581,6 @@ return array(
 
             'debnode03:deployfirst' => array(
                 'type' => 'deploy', 'value' => array(
-                    '/generic/etc/mysql/debian.cnf' => '/etc/mysql/debian.cnf', // must exists in skel/
                     '/generic/etc/mysql/mariadb.cnf' => '/etc/mysql/mariadb.cnf', // must exists in skel/
                     '/generic/etc/mysql/mariadb.conf.d/*' => '/etc/mysql/mariadb.conf.d/',
                 ),
@@ -755,6 +755,7 @@ return array(
             // exim as smarthost
             '/generic/etc/exim4/update-exim4.conf.conf' => '/etc/exim4/update-exim4.conf.conf',
 
+            '/generic/etc/mysql/debian.cnf' => '/etc/mysql/debian.cnf',
             // For the active DB node (needs deploy defaults first to use the files!)
             '/helper/phpmyadmin/phpmyadmin_create_tables.sql' => '/root/ha-inst-tmp/phpmyadmin_create_tables.sql',
             '/helper/phpmyadmin/phpmyadmin_pma_user.sql' => '/root/ha-inst-tmp/phpmyadmin_pma_user.sql',
@@ -787,7 +788,6 @@ return array(
 
             'debnode04:deployfirst' => array(
                 'type' => 'deploy', 'value' => array(
-                    '/generic/etc/mysql/debian.cnf' => '/etc/mysql/debian.cnf', // must exists in skel/
                     '/generic/etc/mysql/mariadb.cnf' => '/etc/mysql/mariadb.cnf', // must exists in skel/
                     '/generic/etc/mysql/mariadb.conf.d/*' => '/etc/mysql/mariadb.conf.d/',
                 ),
