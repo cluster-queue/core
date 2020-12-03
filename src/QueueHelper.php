@@ -34,7 +34,7 @@ class QueueHelper
     /**
      * Version ID information.
      */
-    const VERSION = '1.0.0';
+    const VERSION = '1.0.2';
 
     /**
      * Verbose/ debug mode
@@ -91,6 +91,12 @@ class QueueHelper
      */
     private $_logger = null;
 
+    /**
+     * Confirmation script location for actions
+     * @var string
+     */
+    private $_confirmCommandLocation = 'src/confirmCommand.sh';
+
 
     /**
      * Init the object, verify and set configs to work with.
@@ -139,6 +145,17 @@ class QueueHelper
         if ( $this->_execConfirm ) {
             $this->_mesgStart( 'Confirmation of commands enabled.', 0, true );
             $this->_mesgEnd( '', true );
+        }
+
+        // misc checks
+        if ( file_exists( $this->_confirmCommandLocation ) ) {
+            // core project
+        }
+        else if ( file_exists( 'vendor/cluster-queue/core/src/confirmCommand.sh' ) ) {
+            $this->_confirmCommandLocation = 'vendor/cluster-queue/core/src/confirmCommand.sh';
+        }
+        else {
+            throw new Exception( 'ERR: Confirmation of commands - script not found!', 1 );
         }
     }
 
@@ -355,6 +372,11 @@ class QueueHelper
         if ( key( $list ) === 'files' && current( $list ) == true ) {
             $pathPrefixSrc = 'build';
             $list = array();
+
+            if ( ! isset( $this->_configs[$toHostName] ) ) {
+                throw new Exception( 'Config for "'. $toHostName .'" not found' );
+            }
+
             foreach ( $this->_configs[$toHostName]['files'] as $file ) {
                 if ( file_exists( $pathPrefixSrc . '/' . $toHostName . $file ) === false ) {
                     throw new Exception( 'Src file not found: "' . $file . '"' );
@@ -517,7 +539,7 @@ class QueueHelper
             return 0;
         }
 
-        if ($this->_execConfirm && $this->_executeShellCommandConfirm() === false) {
+        if ( $this->_execConfirm && $this->_executeShellCommandConfirm() === false ) {
             return 0;
         }
 
@@ -539,8 +561,19 @@ class QueueHelper
 
             return $execCode;
         }
+        else {
+            $this->_mesgEnd( 'Success', true );
+        }
 
-        $this->_mesgEnd( 'Success', true );
+        if ( $execMsgs && $this->_debug === true ) {
+            $this->_mesgStart( 'Remote output found:', 3, true );
+            $this->_mesgEnd( '', true );
+
+            foreach ( $execMsgs as $mesg ) {
+                $this->_mesgStart( $mesg, 4, true );
+                $this->_mesgEnd( '', true );
+            }
+        }
 
         return 0;
     }
@@ -553,7 +586,7 @@ class QueueHelper
      */
     private function _executeShellCommandConfirm()
     {
-        $lastLine = exec( 'sh src/confirmCommand.sh', $execMsgs, $execCode );
+        $lastLine = exec( 'sh ' . $this->_confirmCommandLocation, $execMsgs, $execCode );
         if ( $execCode != 0 ) {
             $this->_mesgEnd( 'Skip', false );// just 4 the log
 

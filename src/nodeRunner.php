@@ -82,7 +82,7 @@ $actions = array(
 );
 $input = getopt( $shortopts, $longopts );
 
-$usageMesg = 'Usage: ./php-cluster-queue [--config:<nodes config>] [--action: ' . implode( '|', $actions ) . ']'
+$usageMesg = 'Usage: ./php-cluster-queue [--config=<nodes config>] [--action= ' . implode( '|', $actions ) . ']'
     . PHP_EOL . 'eg: ./php-cluster-queue --config=debnode --action=create' . PHP_EOL;
 if ( $inputCnt < 3 ) {
     exit( $usageMesg );
@@ -93,7 +93,7 @@ if ( $inputCnt < 3 ) {
 //
 
 try {
-    if ( isset($input['config']) && ctype_alpha( $input['config'] ) ) {
+    if ( isset($input['config']) && ctype_alnum( $input['config'] ) ) {
         $configNodesLoc = 'src/config/nodeconfigs_' . $input['config'] . '.php';
         if ( !file_exists( $configNodesLoc ) ) {
             throw new Exception( 'Invalid config location: "' . $configNodesLoc . '"' );
@@ -124,7 +124,7 @@ catch ( Exception $ex ) {
 }
 
 //
-// run
+// boot
 //
 
 require_once 'vendor/autoload.php';
@@ -141,6 +141,10 @@ $logger = new Mumsys_Logger_File( $logOptions );
 
 /** @var QueueHelper Helper/manager object */
 $runner = new QueueHelper( $input, $configNodes, $configsDefault, $logger );
+
+//
+// run
+//
 
 switch ( $input['action'] ) {
     case 'create':
@@ -180,6 +184,7 @@ switch ( $input['action'] ) {
         $runner->run('deploy');
         break;
 
+    // like deploy for archive
     case 'archive':
         $runner->configsCreate();
 
@@ -191,6 +196,7 @@ switch ( $input['action'] ) {
         $runner->run('archive');
         break;
 
+    // like deploy for actions/excecutions
     case 'actions':
     case 'excecutions':
         $runner->configsCreate();

@@ -29,7 +29,9 @@ iface NODEETHIFACENAME01 inet static
 
 #auto NODEETHIFACENAME02
 iface NODEETHIFACENAME02 inet static
-        address NODE01IPADDRPUB/24
+        address NODE01IPADDRPUB
+        netmask NODE01NETMASKIPPUB
+        network NODE01NWIPADDRPUB
         gateway NODE01GWIPADDRPUB
         # dns-* options are implemented by the resolvconf package, if installed
         dns-search NODESDOMAINNAME
