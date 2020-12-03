@@ -124,7 +124,7 @@ catch ( Exception $ex ) {
 }
 
 //
-// run
+// boot
 //
 
 require_once 'vendor/autoload.php';
@@ -141,6 +141,10 @@ $logger = new Mumsys_Logger_File( $logOptions );
 
 /** @var QueueHelper Helper/manager object */
 $runner = new QueueHelper( $input, $configNodes, $configsDefault, $logger );
+
+//
+// run
+//
 
 switch ( $input['action'] ) {
     case 'create':
@@ -180,6 +184,7 @@ switch ( $input['action'] ) {
         $runner->run('deploy');
         break;
 
+    // like deploy for archive
     case 'archive':
         $runner->configsCreate();
 
@@ -191,6 +196,7 @@ switch ( $input['action'] ) {
         $runner->run('archive');
         break;
 
+    // like deploy for actions/excecutions
     case 'actions':
     case 'excecutions':
         $runner->configsCreate();

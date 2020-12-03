@@ -34,7 +34,7 @@ class QueueHelper
     /**
      * Version ID information.
      */
-    const VERSION = '1.0.1';
+    const VERSION = '1.0.2';
 
     /**
      * Verbose/ debug mode
@@ -372,6 +372,11 @@ class QueueHelper
         if ( key( $list ) === 'files' && current( $list ) == true ) {
             $pathPrefixSrc = 'build';
             $list = array();
+
+            if ( ! isset( $this->_configs[$toHostName] ) ) {
+                throw new Exception( 'Config for "'. $toHostName .'" not found' );
+            }
+
             foreach ( $this->_configs[$toHostName]['files'] as $file ) {
                 if ( file_exists( $pathPrefixSrc . '/' . $toHostName . $file ) === false ) {
                     throw new Exception( 'Src file not found: "' . $file . '"' );
@@ -534,7 +539,7 @@ class QueueHelper
             return 0;
         }
 
-        if ($this->_execConfirm && $this->_executeShellCommandConfirm() === false) {
+        if ( $this->_execConfirm && $this->_executeShellCommandConfirm() === false ) {
             return 0;
         }
 
@@ -556,8 +561,19 @@ class QueueHelper
 
             return $execCode;
         }
+        else {
+            $this->_mesgEnd( 'Success', true );
+        }
 
-        $this->_mesgEnd( 'Success', true );
+        if ( $execMsgs && $this->_debug === true ) {
+            $this->_mesgStart( 'Remote output found:', 3, true );
+            $this->_mesgEnd( '', true );
+
+            foreach ( $execMsgs as $mesg ) {
+                $this->_mesgStart( $mesg, 4, true );
+                $this->_mesgEnd( '', true );
+            }
+        }
 
         return 0;
     }
